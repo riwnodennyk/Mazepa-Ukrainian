@@ -87,12 +87,14 @@
         android:orientation="horizontal" >
 
         <LinearLayout
+            android:id="@+id/card_translate_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/card_button_selector"
             android:clickable="true"
-            android:gravity="center" >
+            android:gravity="center"
+            android:visibility="gone" >
 
             <ImageView
                 android:layout_width="wrap_content"

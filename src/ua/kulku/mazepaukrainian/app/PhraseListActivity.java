@@ -5,6 +5,7 @@ import java.util.List;
 
 import ua.kulku.mazepaukrainian.R;
 import ua.kulku.mazepaukrainian.data.Phrase;
+import ua.kulku.mazepaukrainian.ui.SelectionCallback;
 import android.app.ListActivity;
 import android.content.Context;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 public class PhraseListActivity extends ListActivity {
 	static class PhraseAdapter extends ArrayAdapter<Phrase> {
 
+		// TODO optimize with reuse
 		private final int mTextViewResourceId;
 		private final Context mContext;
 		private final List<Phrase> mObjects;
@@ -35,36 +37,61 @@ public class PhraseListActivity extends ListActivity {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(mTextViewResourceId, parent, false);
 			Phrase phrase = mObjects.get(position);
-			((TextView) rowView.findViewById(R.id.learn_word)).setText(phrase
-					.getLearnWord());
-			((TextView) rowView.findViewById(R.id.user_word)).setText(phrase
-					.getUserWord());
-			((TextView) rowView.findViewById(R.id.learn_phrase)).setText(phrase
-					.getLearnPhrase());
-			((TextView) rowView.findViewById(R.id.user_phrase)).setText(phrase
-					.getUserPhrase());
+
+			View cardTranslateButton = (rowView
+					.findViewById(R.id.card_translate_btn));
+
+			TextView field;
+			field = ((TextView) rowView.findViewById(R.id.learn_word));
+			field.setText(phrase.getLearnWord());
+			field.setCustomSelectionActionModeCallback(new SelectionCallback(
+					mContext, field, UKRAINIAN, ENGLISH, cardTranslateButton));
+
+			field = ((TextView) rowView.findViewById(R.id.user_word));
+			field.setText(phrase.getUserWord());
+			field.setCustomSelectionActionModeCallback(new SelectionCallback(
+					mContext, field, ENGLISH, UKRAINIAN, cardTranslateButton));
+
+			field = ((TextView) rowView.findViewById(R.id.learn_phrase));
+			field.setText(phrase.getLearnPhrase());
+			field.setCustomSelectionActionModeCallback(new SelectionCallback(
+					mContext, field, UKRAINIAN, ENGLISH, cardTranslateButton));
+
+			field = ((TextView) rowView.findViewById(R.id.user_phrase));
+			field.setText(phrase.getUserPhrase());
+			field.setCustomSelectionActionModeCallback(new SelectionCallback(
+					mContext, field, ENGLISH, UKRAINIAN, cardTranslateButton));
 
 			return rowView;
 		}
 	}
+
+	private static final String UKRAINIAN = "uk";
+	private static final String ENGLISH = "en";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_phrase_list);
 		List<Phrase> phraseList = new ArrayList<Phrase>();
-		phraseList.add(new Phrase("сказати", "say", null,
-				"Ти можеш <b>сказати</b>, як туди дістатись?",
+		phraseList.add(new Phrase("��������", "say", null,
+				"�������� ������ ������� ����� ����������� ����� ������",
 				"Could you <b>say</b> how to get there?", null));
 
-		phraseList.add(new Phrase("життя", "life", null, "<b>Життя</b> чудове",
-				"<b>Life</b> is good", null));
+		phraseList
+				.add(new Phrase(
+						"�����",
+						"life",
+						null,
+						"���� ����� �� ���� ����� ���� ����� �� ���������� ������",
+						"<b>Life</b> is good", null));
 
-		phraseList.add(new Phrase("Будь здоровий", "God bless you", null, "",
-				"", null));
+		phraseList.add(new Phrase("����� ���", "God bless you", null,
+				"�������� �������� ������������ ������ �� ������ �� �?.",
+				"Die young", null));
 
-		phraseList.add(new Phrase("стілець", "chair", null,
-				"Цей <b>стілець</b> не дуже зручний",
+		phraseList.add(new Phrase("����� ó����", "chair", null,
+				"��� ���� ������� ����������� �����",
 				"This <b>chair</b> is not comfortable enough", null));
 
 		PhraseAdapter phraseAdapter = new PhraseAdapter(this,
