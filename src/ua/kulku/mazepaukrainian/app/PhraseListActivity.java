@@ -1,5 +1,6 @@
 package ua.kulku.mazepaukrainian.app;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
 
 public class PhraseListActivity extends ListActivity {
 	static class PhraseAdapter extends ArrayAdapter<Phrase> {
@@ -68,34 +73,56 @@ public class PhraseListActivity extends ListActivity {
 
 	private static final String UKRAINIAN = "uk";
 	private static final String ENGLISH = "en";
+	private static final int DEFAULT_SHOW_MORE_PHRASES_NUMBER = 5;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_phrase_list);
 		List<Phrase> phraseList = new ArrayList<Phrase>();
-		phraseList.add(new Phrase("��������", "say", null,
-				"�������� ������ ������� ����� ����������� ����� ������",
-				"Could you <b>say</b> how to get there?", null));
+		try {
+			Dao<Phrase, ?> phraseDao = DaoManager.createDao(
+					((MazepaApplication) getApplication()).getDb()
+							.getConnectionSource(), Phrase.class);
 
-		phraseList
-				.add(new Phrase(
-						"�����",
-						"life",
-						null,
-						"���� ����� �� ���� ����� ���� ����� �� ���������� ������",
-						"<b>Life</b> is good", null));
+			phraseList = phraseDao.queryForAll();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		phraseList.add(new Phrase("����� ���", "God bless you", null,
-				"�������� �������� ������������ ������ �� ������ �� �?.",
-				"Die young", null));
-
-		phraseList.add(new Phrase("����� ó����", "chair", null,
-				"��� ���� ������� ����������� �����",
-				"This <b>chair</b> is not comfortable enough", null));
+		View footer = getLayoutInflater().inflate(
+				R.layout.part_phrase_list_footer, null);
+		// footer.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// Toast.makeText(PhraseListActivity.this, "foo",
+		// Toast.LENGTH_SHORT).show();
+		//
+		// }
+		// });
+		getListView().addFooterView(footer, null, true);
 
 		PhraseAdapter phraseAdapter = new PhraseAdapter(this,
 				R.layout.part_phrase_list_item, phraseList);
 		setListAdapter(phraseAdapter);
+
+	}
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		boolean isFooter = (position == l.getCount() - 1);
+		if (isFooter) {
+			showMorePhrases();
+		}
+		super.onListItemClick(l, v, position, id);
+	}
+
+	private void showMorePhrases() {
+		showMorePhrases(DEFAULT_SHOW_MORE_PHRASES_NUMBER);
+	}
+
+	private void showMorePhrases(int cardsNumber) {
+		// TODO Auto-generated method stub
 	}
 }

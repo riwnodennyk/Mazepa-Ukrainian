@@ -1,10 +1,12 @@
 package ua.kulku.mazepaukrainian.data;
 
-import java.io.File;
-
 import android.text.Html;
 import android.text.Spanned;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable
 public class Phrase {
 	public Spanned getLearnWord() {
 		return Html.fromHtml(mLearnWord);
@@ -22,11 +24,11 @@ public class Phrase {
 		this.mUserWord = mUserWord;
 	}
 
-	public File getmWordSound() {
+	public String getmWordSound() {
 		return mWordSound;
 	}
 
-	public void setmWordSound(File mWordSound) {
+	public void setmWordSound(String mWordSound) {
 		this.mWordSound = mWordSound;
 	}
 
@@ -46,24 +48,35 @@ public class Phrase {
 		this.mUserPhrase = mUserPhrase;
 	}
 
-	public File getmPhraseSound() {
+	public String getmPhraseSound() {
 		return mPhraseSound;
 	}
 
-	public void setmPhraseSound(File mPhraseSound) {
+	public void setmPhraseSound(String mPhraseSound) {
 		this.mPhraseSound = mPhraseSound;
 	}
 
+	@DatabaseField(generatedId = true)
+	private int id;
+	@DatabaseField
 	private String mLearnWord;
+	@DatabaseField
 	private String mUserWord;
-	private File mWordSound;
+	@DatabaseField
+	private String mWordSound; // sound file name
 
+	@DatabaseField
 	private String mLearnPhrase;
+	@DatabaseField
 	private String mUserPhrase;
-	private File mPhraseSound;
+	@DatabaseField
+	private String mPhraseSound; // sound file name
 
-	public Phrase(String learnWord, String userWord, File wordSound,
-			String learnPhrase, String userPhrase, File phraseSound) {
+	public Phrase() {
+	}
+
+	public Phrase(String learnWord, String userWord, String wordSound,
+			String learnPhrase, String userPhrase, String phraseSound) {
 		super();
 		this.mLearnWord = learnWord;
 		this.mUserWord = userWord;
