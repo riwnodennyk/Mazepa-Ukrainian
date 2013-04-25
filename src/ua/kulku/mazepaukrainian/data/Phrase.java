@@ -1,5 +1,6 @@
 package ua.kulku.mazepaukrainian.data;
 
+import android.provider.BaseColumns;
 import android.text.Html;
 import android.text.Spanned;
 
@@ -8,6 +9,13 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
 public class Phrase {
+	public static final String LEARN_WORD = "LearnWord";
+	public static final String LEARN_PHRASE = "LearnPhrase";
+	public static final String WORD_SOUND = "WordSound";
+	public static final String USER_WORD = "UserWord";
+	public static final String USER_PHRASE = "UserPhrase";
+	public static final String PHRASE_SOUND = "PhraseSound";
+
 	public Spanned getLearnWord() {
 		return Html.fromHtml(mLearnWord);
 	}
@@ -56,20 +64,20 @@ public class Phrase {
 		this.mPhraseSound = mPhraseSound;
 	}
 
-	@DatabaseField(generatedId = true)
+	@DatabaseField(generatedId = true, columnName = BaseColumns._ID)
 	private int id;
-	@DatabaseField
+	@DatabaseField(columnName = LEARN_WORD)
 	private String mLearnWord;
-	@DatabaseField
+	@DatabaseField(columnName = USER_WORD)
 	private String mUserWord;
-	@DatabaseField
+	@DatabaseField(columnName = WORD_SOUND)
 	private String mWordSound; // sound file name
 
-	@DatabaseField
+	@DatabaseField(columnName = LEARN_PHRASE)
 	private String mLearnPhrase;
-	@DatabaseField
+	@DatabaseField(columnName = USER_PHRASE)
 	private String mUserPhrase;
-	@DatabaseField
+	@DatabaseField(columnName = PHRASE_SOUND)
 	private String mPhraseSound; // sound file name
 
 	public Phrase() {
