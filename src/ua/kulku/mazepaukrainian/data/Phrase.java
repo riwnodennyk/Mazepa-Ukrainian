@@ -1,97 +1,135 @@
+
 package ua.kulku.mazepaukrainian.data;
+
+import java.util.Date;
 
 import android.provider.BaseColumns;
 import android.text.Html;
 import android.text.Spanned;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
 public class Phrase {
-	public static final String LEARN_WORD = "LearnWord";
-	public static final String LEARN_PHRASE = "LearnPhrase";
-	public static final String WORD_SOUND = "WordSound";
-	public static final String USER_WORD = "UserWord";
-	public static final String USER_PHRASE = "UserPhrase";
-	public static final String PHRASE_SOUND = "PhraseSound";
+    public enum CardLearningState
+    {
+        NOT_SHOWN, IN_PROGRESS, LEARNED, DECLINED
+    }
 
-	public Spanned getLearnWord() {
-		return Html.fromHtml(mLearnWord);
-	}
+    public static final String LEARN_WORD = "learn_word";
+    public static final String LEARN_PHRASE = "learn_phrase";
+    public static final String WORD_SOUND = "word_sound";
+    public static final String USER_WORD = "user_word";
+    public static final String USER_PHRASE = "user_phrase";
+    public static final String PHRASE_SOUND = "phrase_sound";
+    public static final String STATE = "state";
+    public static final String CHANGE_STATE_DATE = "change_state_date";
 
-	public void setmLearnWord(String mLearnWord) {
-		this.mLearnWord = mLearnWord;
-	}
+    @DatabaseField(generatedId = true, columnName = BaseColumns._ID)
+    private int id;
 
-	public Spanned getUserWord() {
-		return Html.fromHtml(mUserWord);
-	}
+    @DatabaseField(columnName = LEARN_WORD)
+    private String mLearnWord;
 
-	public void setmUserWord(String mUserWord) {
-		this.mUserWord = mUserWord;
-	}
+    @DatabaseField(columnName = USER_WORD)
+    private String mUserWord;
 
-	public String getmWordSound() {
-		return mWordSound;
-	}
+    @DatabaseField(columnName = WORD_SOUND)
+    private String mWordSound; // sound file name
 
-	public void setmWordSound(String mWordSound) {
-		this.mWordSound = mWordSound;
-	}
+    @DatabaseField(columnName = LEARN_PHRASE)
+    private String mLearnPhrase;
 
-	public Spanned getLearnPhrase() {
-		return Html.fromHtml(mLearnPhrase);
-	}
+    @DatabaseField(columnName = USER_PHRASE)
+    private String mUserPhrase;
 
-	public void setmLearnPhrase(String mLearnPhrase) {
-		this.mLearnPhrase = mLearnPhrase;
-	}
+    @DatabaseField(columnName = PHRASE_SOUND)
+    private String mPhraseSound; // sound file name
 
-	public Spanned getUserPhrase() {
-		return Html.fromHtml(mUserPhrase);
-	}
+    @DatabaseField(columnName = STATE, dataType = DataType.ENUM_INTEGER)
+    private CardLearningState mState;
 
-	public void setmUserPhrase(String mUserPhrase) {
-		this.mUserPhrase = mUserPhrase;
-	}
+    @DatabaseField(columnName = CHANGE_STATE_DATE)
+    private Date mChangeStateDate;
 
-	public String getmPhraseSound() {
-		return mPhraseSound;
-	}
+    public Phrase() {
+    }
 
-	public void setmPhraseSound(String mPhraseSound) {
-		this.mPhraseSound = mPhraseSound;
-	}
+    public Phrase(String learnWord, String userWord, String wordSound,
+            String learnPhrase, String userPhrase, String phraseSound) {
+        super();
+        this.mLearnWord = learnWord;
+        this.mUserWord = userWord;
+        this.mWordSound = wordSound;
 
-	@DatabaseField(generatedId = true, columnName = BaseColumns._ID)
-	private int id;
-	@DatabaseField(columnName = LEARN_WORD)
-	private String mLearnWord;
-	@DatabaseField(columnName = USER_WORD)
-	private String mUserWord;
-	@DatabaseField(columnName = WORD_SOUND)
-	private String mWordSound; // sound file name
+        this.mLearnPhrase = learnPhrase;
+        this.mUserPhrase = userPhrase;
+        this.mPhraseSound = phraseSound;
+    }
 
-	@DatabaseField(columnName = LEARN_PHRASE)
-	private String mLearnPhrase;
-	@DatabaseField(columnName = USER_PHRASE)
-	private String mUserPhrase;
-	@DatabaseField(columnName = PHRASE_SOUND)
-	private String mPhraseSound; // sound file name
+    public Date getChangeStateDate() {
+        return mChangeStateDate;
+    }
 
-	public Phrase() {
-	}
+    public Spanned getLearnPhrase() {
+        return Html.fromHtml(mLearnPhrase);
+    }
 
-	public Phrase(String learnWord, String userWord, String wordSound,
-			String learnPhrase, String userPhrase, String phraseSound) {
-		super();
-		this.mLearnWord = learnWord;
-		this.mUserWord = userWord;
-		this.mWordSound = wordSound;
+    public Spanned getLearnWord() {
+        return Html.fromHtml(mLearnWord);
+    }
 
-		this.mLearnPhrase = learnPhrase;
-		this.mUserPhrase = userPhrase;
-		this.mPhraseSound = phraseSound;
-	}
+    public String getPhraseSound() {
+        return mPhraseSound;
+    }
+
+    public CardLearningState getState() {
+        return mState;
+    }
+
+    public Spanned getUserPhrase() {
+        return Html.fromHtml(mUserPhrase);
+    }
+
+    public Spanned getUserWord() {
+        return Html.fromHtml(mUserWord);
+    }
+
+    public String getWordSound() {
+        return mWordSound;
+    }
+
+    public void setChangeStateDate(Date changeStateDate) {
+        this.mChangeStateDate = changeStateDate;
+    }
+
+    public void setLearnPhrase(String mLearnPhrase) {
+        this.mLearnPhrase = mLearnPhrase;
+    }
+
+    public void setLearnWord(String mLearnWord) {
+        this.mLearnWord = mLearnWord;
+    }
+
+    public void setmPhraseSound(String mPhraseSound) {
+        this.mPhraseSound = mPhraseSound;
+    }
+
+    public void setState(CardLearningState state) {
+        this.mState = state;
+    }
+
+    public void setUserPhrase(String mUserPhrase) {
+        this.mUserPhrase = mUserPhrase;
+    }
+
+    public void setUserWord(String mUserWord) {
+        this.mUserWord = mUserWord;
+    }
+
+    public void setWordSound(String mWordSound) {
+        this.mWordSound = mWordSound;
+    }
 }

@@ -18,4 +18,10 @@ public class MazLog {
 			Log.e(tag, msg);
 		}
 	}
+
+	public static void d(String tag, String msg) {
+		if (Log.DEBUG > MINIMUM_LOG_LEVEL) {
+			Log.d(tag, msg);
+		}
+	}
 }
